@@ -52,13 +52,40 @@ public class Node {
         if (pos.child == null) {
             return;
         }
-        for (Node child : pos.child)
+        for (Node child : pos.child) {
             if (child.name.equals(name)) {
                 pos.child.remove(child);
                 return;
             }
-        for (Node child : pos.child)
+        }
+        for (Node child : pos.child) {
             remove(child, name);
+        }
+    }
+
+    // Метод удаления всех детей у узла.
+    public void removeAllChild(String parentName) {
+        if (this.name.equals(parentName)) {
+            if (this.child != null) {
+                child.clear();
+            }
+            return;
+        }
+        removeAllChild(this, parentName);
+    }
+    private void removeAllChild(Node pos, String parentName) {
+        if (pos.child == null) {
+            return;
+        }
+        for (int i = 0; i < pos.child.size(); i++) {
+            if ( child.get(i).name.equals(parentName)) {
+                pos.child.get(i).removeAllChild(child.get(i).name);
+                return;
+            }
+        }
+        for (Node child : pos.child) {
+            remove(child, name);
+        }
     }
 
     // Метод для преобразования дерева в строку.

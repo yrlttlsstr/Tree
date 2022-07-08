@@ -139,4 +139,31 @@ public class TestNode {
         tree.remove("Корень");
         assertEquals("", tree.toString());
     }
+
+    @Test
+    void removeAllChild_1() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист2.1", "Лист2");
+        tree.add("Лист2.2", "Лист2");
+        tree.add("Лист2.3", "Лист2");
+        tree.removeAllChild("Лист2");
+        assertEquals("Корень\n" + "\tЛист1\n" + "\tЛист2\n", tree.toString());
+    }
+
+    @Test
+    void removeAllChild_2() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист2.1", "Лист2");
+        tree.add("Лист2.2", "Лист2");
+        tree.add("Лист2.3", "Лист2");
+        tree.add("Лист1.1", "Лист1");
+        tree.add("Лист1.2", "Лист1");
+        tree.removeAllChild("Лист2");
+        tree.removeAllChild("Лист1");
+        assertEquals("Корень\n" + "\tЛист1\n" + "\tЛист2\n", tree.toString());
+    }
 }
