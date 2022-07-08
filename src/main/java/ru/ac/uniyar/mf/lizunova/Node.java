@@ -7,17 +7,19 @@ public class Node {
     private List<Node> child;
 
     // Конструкторы.
-    public Node() {}
+    public Node() {
+    }
+
     public Node(String name) {
         this.name = name;
     }
 
     // Метод добавляет узел.
     public void add(String name, String parentName) {
-       add(this, name, parentName);
+        add(this, name, parentName);
     }
     private void add(String name) {
-        if(child == null) {
+        if (child == null) {
             child = new ArrayList<>();
         }
         child.add(new Node(name));
@@ -28,11 +30,35 @@ public class Node {
             return;
         }
         if (pos.child == null) {
-           return;
+            return;
         }
         for (Node node : pos.child) {
             add(node, name, parentName);
         }
+    }
+
+    // Метод удаляет узел.
+    public void remove(String name) {
+        if (this.name.equals(name)) {
+            this.name = null;
+            if (this.child != null) {
+                this.child.clear();
+            }
+            return;
+        }
+        remove(this, name);
+    }
+    private void remove(Node pos, String name) {
+        if (pos.child == null) {
+            return;
+        }
+        for (Node child : pos.child)
+            if (child.name.equals(name)) {
+                pos.child.remove(child);
+                return;
+            }
+        for (Node child : pos.child)
+            remove(child, name);
     }
 
     // Метод для преобразования дерева в строку.
@@ -40,6 +66,7 @@ public class Node {
     public String toString() {
         return toString(this, 0);
     }
+
     private String toString(Node pos, int lvl) {
         if (pos.name == null) {
             return "";
@@ -62,7 +89,13 @@ public class Node {
     public String getName() {
         return name;
     }
+
     public List<Node> getChild() {
         return child;
+    }
+
+    // Сеттер.
+    public void setName(String name) {
+        this.name = name;
     }
 }

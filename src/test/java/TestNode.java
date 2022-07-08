@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ public class TestNode {
         tree.add("Лист", "Корень");
 
         String contentWrite = tree.toString();
-        String path = "file.txt";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.txt";
         Files.write(Paths.get(path), contentWrite.getBytes());
 
         byte[] bytes = Files.readAllBytes(Paths.get(path));
@@ -54,7 +53,7 @@ public class TestNode {
         tree.add("Лист", "Корень");
 
         String contentWrite = tree.toString();
-        String path = "file.txt";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.txt";
         Files.write(Paths.get(path), contentWrite.getBytes());
     }
 
@@ -63,7 +62,7 @@ public class TestNode {
         Node tree = new Node("Корень");
         tree.add("Лист", "Корень");
 
-        String path = "/home/user/IdeaProjects/tree/target/file.txt";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.txt";
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         String contentRead = new String(bytes);
 
@@ -75,7 +74,7 @@ public class TestNode {
         Node tree = new Node("Корень");
         tree.add("Лист", "Корень");
 
-        String path = "/home/user/IdeaProjects/tree/target/file.json";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.json";
 
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         String nodeAsString = objectMapper.writeValueAsString(tree);
@@ -88,7 +87,7 @@ public class TestNode {
         Node tree = new Node("Корень");
         tree.add("Лист", "Корень");
 
-        String path = "/home/user/IdeaProjects/tree/target/file.json";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.json";
 
         String jsonString = "{\n" +
                 "  \"name\" : \"Корень\",\n" +
@@ -109,7 +108,7 @@ public class TestNode {
         Node tree = new Node("Корень");
         tree.add("Лист", "Корень");
 
-        String path = "/home/user/IdeaProjects/tree/target/file.json";
+        String path = "C:\\Users\\АРИША\\IdeaProjects\\Tree\\target\\file.json";
 
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         String nodeAsString = objectMapper.writeValueAsString(tree);
@@ -122,5 +121,22 @@ public class TestNode {
         Node treeNew = objectMapper.readValue(jsonString, Node.class);
 
         assertEquals("Корень\n" + "\tЛист\n", treeNew.toString());
+    }
+
+    @Test
+    void remove_1() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист2.1", "Лист2");
+        tree.remove("Лист2");
+        assertEquals("Корень\n" + "\tЛист1\n", tree.toString());
+    }
+
+    @Test
+    void remove_2() {
+        Node tree = new Node("Корень");
+        tree.remove("Корень");
+        assertEquals("", tree.toString());
     }
 }
