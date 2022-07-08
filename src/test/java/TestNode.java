@@ -187,4 +187,38 @@ public class TestNode {
         tree.setName("Лист2.1", "Лист2.2");
         assertEquals("Корень\n" + "\tЛист3\n"+ "\t\tЛист1.1\n" + "\tЛист2\n"+ "\t\tЛист2.2\n", tree.toString());
     }
+
+    @Test
+    void setName_3() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист1.1", "Лист1");
+        tree.add("Лист2.1", "Лист2");
+        tree.setName("Лист3", "Лист4");
+        tree.setName("Лист2.1", "Лист2.2");
+        assertEquals("Корень\n" + "\tЛист1\n"+ "\t\tЛист1.1\n" + "\tЛист2\n"+ "\t\tЛист2.2\n", tree.toString());
+    }
+
+    @Test
+    void getNode_1() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист1.1", "Лист1");
+        tree.add("Лист2.1", "Лист2");
+        Node node = tree.getNode("Лист2");
+        assertEquals("Лист2\n" + "\tЛист2.1\n", node.toString());
+    }
+
+    @Test
+    void getNode_2() {
+        Node tree = new Node("Корень");
+        tree.add("Лист1", "Корень");
+        tree.add("Лист2", "Корень");
+        tree.add("Лист1.1", "Лист1");
+        tree.add("Лист2.1", "Лист2");
+        Node node = tree.getNode("Лист1.1");
+        assertEquals("Лист1.1\n", node.toString());
+    }
 }

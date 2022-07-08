@@ -7,9 +7,7 @@ public class Node {
     private List<Node> child;
 
     // Конструкторы.
-    public Node() {
-    }
-
+    public Node() {}
     public Node(String name) {
         this.name = name;
     }
@@ -113,12 +111,36 @@ public class Node {
     }
 
     // Геттеры.
+    // Метод возвращает имя узла.
     public String getName() {
         return name;
     }
 
+    // Метод возвращает список детей узла.
     public List<Node> getChild() {
         return child;
+    }
+
+    // Метод находит и возвращает узел по имени.
+    public Node getNode(String name) {
+        if (this.name.equals(name)) {
+            return this;
+        }
+        return getNode(this, name);
+    }
+    private Node getNode(Node pos, String name) {
+        if (pos.child == null) {
+            return pos;
+        }
+        for (int i = 0; i < pos.child.size(); i++) {
+            if (pos.child.get(i).name.equals(name)) {
+                return pos.child.get(i).getNode(name);
+            }
+        }
+        for (Node child : pos.child) {
+            return getNode(child, name);
+        }
+        return pos;
     }
 
     // Сеттер.
