@@ -122,7 +122,25 @@ public class Node {
     }
 
     // Сеттер.
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name, String newName) {
+        if (this.name.equals(name)) {
+            this.name = newName;
+            return;
+        }
+        setName(this, name, newName);
+    }
+    private void setName(Node pos, String name, String newName) {
+        if (pos.child == null) {
+            return;
+        }
+        for (int i = 0; i < pos.child.size(); i++) {
+            if (pos.child.get(i).name.equals(name)) {
+                pos.child.get(i).setName(name, newName);
+                return;
+            }
+        }
+        for (Node child : pos.child) {
+            setName(child, name, newName);
+        }
     }
 }
