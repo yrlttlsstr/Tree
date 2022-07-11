@@ -165,4 +165,40 @@ public class Node {
             setName(child, name, newName);
         }
     }
+
+    // Кол-во элементов в дереве.
+    public int count() {
+        int k = 0;
+        count_elems(this, k);
+        return k;
+    }
+    private void count_elems(Node pos, int count) {
+        if (pos == null) return;
+        for (Node child : pos.child) {
+            count_elems(child, count);
+        }
+        count++;
+    }
+
+    // Метод для преобразования дерева в строку.
+    public String toStringHTML() {
+        return "<ul>" + toStringHTML(this) + "</ul>";
+    }
+
+    private String toStringHTML(Node pos) {
+        if (pos.name == null) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        result.append("<li>").append(pos.name);
+        if (pos.child == null) {
+            return result.append("</li>").toString();
+        }
+        result.append("<ul>");
+        for (Node child : pos.child) {
+            result.append(toStringHTML(child));
+        }
+        result.append("</ul>");
+        return result.append("</li>").toString();
+    }
 }
