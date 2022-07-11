@@ -166,20 +166,6 @@ public class Node {
         }
     }
 
-    // Кол-во элементов в дереве.
-    public int count() {
-        int k = 0;
-        count_elems(this, k);
-        return k;
-    }
-    private void count_elems(Node pos, int count) {
-        if (pos == null) return;
-        for (Node child : pos.child) {
-            count_elems(child, count);
-        }
-        count++;
-    }
-
     // Метод для преобразования дерева в строку.
     public String toStringHTML() {
         return "<ul>" + toStringHTML(this) + "</ul>";
@@ -201,4 +187,5 @@ public class Node {
         result.append("</ul>");
         return result.append("</li>").toString();
     }
+
 }
