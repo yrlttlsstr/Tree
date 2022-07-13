@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 @Path("/")
 public class TreePresentationController {
     private final Node tree;
+    static int counter = 3;
 
     /**
      * Запоминает список, с которым будет работать.
@@ -64,7 +65,7 @@ public class TreePresentationController {
     @Path("add_root_item")
     @Produces("text/html")
     public Response addRootItem() {
-        tree.add("Лист" + k, "Корень");
+        tree.add("Лист" + counter++, "Корень");
         try {
             return Response.seeOther(new URI("/")).build();
         } catch (URISyntaxException e) {
