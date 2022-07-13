@@ -50,7 +50,7 @@ public class TreePresentationController {
         if (itemValue.equals("Root")) {
             tree.add("List" + counter++, "Root");
         } else {
-            int k = 0;
+            int k;
             if (tree.getNode(itemValue).getChild() == null) {
                 k = 1;
             } else {
@@ -59,6 +59,37 @@ public class TreePresentationController {
             String newNode = itemValue + "." + k;
             tree.add(newNode, itemValue);
         }
+        try {
+            return Response.seeOther(new URI("/")).build();
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Ошибка построения URI для перенаправления");
+        }
+    }
+
+    @POST
+    @Path("remove_item")
+    @Produces("text/html")
+    public Response removeItem(@FormParam("value") String itemValue) {
+        if (!itemValue.equals("Root")) {
+            tree.remove(itemValue);
+        }
+        try {
+            return Response.seeOther(new URI("/")).build();
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Ошибка построения URI для перенаправления");
+        }
+    }
+
+    @POST
+    @Path("reboot")
+    @Produces("text/html")
+    public Response reboot() {
+        tree.removeAllChild("Root");
+        tree.add("List1", "Root");
+        tree.add("List1.1", "List1");
+        tree.add("List2", "Root");
+        tree.add("List2.1", "List2");
+        counter = 3;
         try {
             return Response.seeOther(new URI("/")).build();
         } catch (URISyntaxException e) {
@@ -76,7 +107,7 @@ public class TreePresentationController {
     @Path("/edit/{id}")
     @Produces("text/html")
     public String getEditPage(@PathParam("id") String itemId) {
-        String treeItem = tree.getName(itemId).toString();
+        String treeItem = tree.getName(itemId);
         String result =
                 "<html>" +
                         "  <head>" +
@@ -132,6 +163,14 @@ public class TreePresentationController {
                 "<form method=\"post\" action=\"add_item\">" +
                 "      <input type=\"text\" name=\"value\" value=\"" + treeItem + "\"/>" +
                 "      <input type=\"submit\"/>" +
+                "      </form>" +
+                "<li>Удаление элемента (корень удалять нельзя): </li>" +
+                "<form method=\"post\" action=\"remove_item\">" +
+                "      <input type=\"text\" name=\"value\" value=\"" + treeItem + "\"/>" +
+                "      <input type=\"submit\"/>" +
+                "      </form>" +
+                "      <form method=\"post\" action=\"reboot\">" +
+                "        <input type=\"submit\" value=\"Ребутнуть к исходнику\"/>" +
                 "      </form>" +
                 "  </body>" +
                 "</html>";
