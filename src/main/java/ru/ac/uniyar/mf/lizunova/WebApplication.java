@@ -9,13 +9,13 @@ import java.util.Set;
  */
 public class WebApplication extends Application {
 
-    private Node tree = new Node("Корень");
+    private Node tree = new Node("Root");
 
     public WebApplication() {
-        tree.add("Лист1", "Корень");
-        tree.add("Лист1.1", "Лист1");
-        tree.add("Лист2", "Корень");
-        tree.add("Лист2.1", "Лист2");
+        tree.add("List1", "Root");
+        tree.add("List1.1", "List1");
+        tree.add("List2", "Root");
+        tree.add("List2.1", "List2");
     }
 
     /**

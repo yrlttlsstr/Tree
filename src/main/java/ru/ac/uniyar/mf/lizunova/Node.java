@@ -115,6 +115,26 @@ public class Node {
     public String getName() {
         return name;
     }
+    public String getName(String name) {
+        if (this.name.equals(name)) {
+            return this.name;
+        }
+        return getName(this, name);
+    }
+    private String getName(Node pos, String name) {
+        if (pos.child == null) {
+            return pos.name;
+        }
+        for (int i = 0; i < pos.child.size(); i++) {
+            if (pos.child.get(i).name.equals(name)) {
+                return pos.child.get(i).name;
+            }
+        }
+        for (Node child : pos.child) {
+            return getName(child, name);
+        }
+        return pos.name;
+    }
 
     // Метод возвращает список детей узла.
     public List<Node> getChild() {
@@ -176,7 +196,7 @@ public class Node {
             return "";
         }
         StringBuilder result = new StringBuilder();
-        result.append("<li>").append(pos.name);
+        result.append("<li>").append("<a href=\"edit/" + pos.name + "\">" + pos.name +" </a>");
         if (pos.child == null) {
             return result.append("</li>").toString();
         }
@@ -187,7 +207,4 @@ public class Node {
         result.append("</ul>");
         return result.append("</li>").toString();
     }
-
-
-
 }

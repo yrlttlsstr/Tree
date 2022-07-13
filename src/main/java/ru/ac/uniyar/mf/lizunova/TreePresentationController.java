@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 @Path("/")
 public class TreePresentationController {
     private final Node tree;
-    static int counter = 3;
+    private static int counter = 3;
 
     /**
      * Запоминает список, с которым будет работать.
@@ -43,29 +43,22 @@ public class TreePresentationController {
      * @return HTML-страница со списком.
      */
 
-    /**
-     * Пример обработки POST запроса.
-     * Добавляет одну случайную запись в список и перенаправляет пользователя на основную страницу со списком.
-     *
-     * @return перенаправление на основную страницу со списком.
-     */
     @POST
-    @Path("add_item{id}{id_par}")
+    @Path("add_item")
     @Produces("text/html")
-    public Response addItem(@PathParam("id") String itemId, @PathParam("id_par") String ParentId) {
-        tree.add("Лист{id}", "Лист{id_par}");
-        try {
-            return Response.seeOther(new URI("/")).build();
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException("Ошибка построения URI для перенаправления");
+    public Response addItem(@FormParam("value") String itemValue) {
+        if (itemValue.equals("Root")) {
+            tree.add("List" + counter++, "Root");
+        } else {
+            int k = 0;
+            if (tree.getNode(itemValue).getChild() == null) {
+                k = 1;
+            } else {
+                k = tree.getNode(itemValue).getChild().size() + 1;
+            }
+            String newNode = itemValue + "." + k;
+            tree.add(newNode, itemValue);
         }
-    }
-
-    @POST
-    @Path("add_root_item")
-    @Produces("text/html")
-    public Response addRootItem() {
-        tree.add("Лист" + counter++, "Корень");
         try {
             return Response.seeOther(new URI("/")).build();
         } catch (URISyntaxException e) {
@@ -83,17 +76,17 @@ public class TreePresentationController {
     @Path("/edit/{id}")
     @Produces("text/html")
     public String getEditPage(@PathParam("id") String itemId) {
-        String listItem = tree.getNode(itemId).toString();
+        String treeItem = tree.getName(itemId).toString();
         String result =
                 "<html>" +
                         "  <head>" +
-                        "    <title>Редактирование элемента списка</title>" +
+                        "    <title>Редактирование элемента дерева</title>" +
                         "  </head>" +
                         "  <body>" +
-                        "    <h1>Редактирование элемента списка</h1>" +
+                        "    <h1>Редактирование элемента дерева</h1>" +
                         "    <form method=\"post\" action=\"/edit/" + itemId + "\">" +
                         "      <p>Значение</p>" +
-                        "      <input type=\"text\" name=\"value\" value=\"" + listItem + "\"/>" +
+                        "      <input type=\"text\" name=\"value\" value=\"" + treeItem + "\"/>" +
                         "      <input type=\"submit\"/>";
         result +=
                 "            </form>" +
@@ -127,6 +120,7 @@ public class TreePresentationController {
     @Path("/")
     @Produces("text/html")
     public String getTree() {
+        String treeItem = "";
         return "<html>" +
                 "  <head>" +
                 "    <title>Вывод дерева</title>" +
@@ -134,8 +128,10 @@ public class TreePresentationController {
                 "  <body>" +
                 "    <h1>Вывод дерева</h1>" +
                 tree.toStringHTML() +
-                "<form method=\"post\" action=\"add_root_item\">" +
-                "        <input type=\"submit\" value=\"Add at root item\"/>" +
+                "<li>Добавление элемента к родителю: </li>" +
+                "<form method=\"post\" action=\"add_item\">" +
+                "      <input type=\"text\" name=\"value\" value=\"" + treeItem + "\"/>" +
+                "      <input type=\"submit\"/>" +
                 "      </form>" +
                 "  </body>" +
                 "</html>";
